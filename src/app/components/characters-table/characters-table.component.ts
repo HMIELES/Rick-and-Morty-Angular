@@ -1,31 +1,43 @@
-import { Component } from '@angular/core';
-import { CharacterCardComponent } from "../character-card/character-card.component";
+import { Component, OnInit } from '@angular/core';
+import { CharacterCardComponent } from '../character-card/character-card.component';
+import { RickMortyApiService } from '../../services/ricknmortyapi.service';
 import { Character } from '../../interfaces/character';
-import { RicknmortyapiService } from '../../services/ricknmortyapi.service';
+import { ApiResponse } from '../../interfaces/api-response';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'CharactersTable',
+  selector: 'app-characters-table',
   standalone: true,
-  imports: [CharacterCardComponent],
+  imports: [CommonModule, CharacterCardComponent],
   templateUrl: './characters-table.component.html',
-  styleUrl: './characters-table.component.css'
+  styleUrls: ['./characters-table.component.css']
 })
-export class CharactersTableComponent {
+export class CharactersTableComponent implements OnInit {
   hasNextPage: boolean = false;
   hasPreviousPage: boolean = false;
   characters: Character[] = [];
 
-  constructor(private api: RicknmortyapiService) { }
+  constructor(private api: RickMortyApiService) {}
 
   ngOnInit(): void {
-
+    this.fetchNextPage(); // Cargar primera página al iniciar
   }
 
   fetchNextPage(): void {
-    throw new Error("Not implemented exception");
+    this.api.getNextPage().subscribe((response: ApiResponse) => {
+      this.characters = response.results;
+      this.hasNextPage = response.info.next !== null;
+      this.hasPreviousPage = response.info.prev !== null;
+      this.api.setPagination(response.info);
+    });
   }
 
   fetchPreviousPage(): void {
-    throw new Error("Not implemented exception");
+    this.api.getPreviousPage().subscribe((response: ApiResponse) => {
+      this.characters = response.results;
+      this.hasNextPage = response.info.next !== null;
+      this.hasPreviousPage = response.info.prev !== null;
+      this.api.setPagination(response.info);
+    });
   }
 }

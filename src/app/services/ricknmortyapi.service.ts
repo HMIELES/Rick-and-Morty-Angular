@@ -1,29 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+// Project: Rick and Morty API
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ApiResponse } from '../interfaces/api-response';
-import { Character } from '../interfaces/character';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class RicknmortyapiService {
-  
-  nextUrl = '';
-  previousUrl = '';
+export class RickMortyApiService {
+  private defaultUrl = 'https://rickandmortyapi.com/api/character';
+  private nextUrl: string = '';
+  private prevUrl: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getNextPage(): Observable<ApiResponse> {
-    throw new Error("Not implemented exception");
+    const url = this.nextUrl || this.defaultUrl;
+    return this.http.get<ApiResponse>(url);
   }
 
   getPreviousPage(): Observable<ApiResponse> {
-    throw new Error("Not implemented exception");
+    const url = this.prevUrl || this.defaultUrl;
+    return this.http.get<ApiResponse>(url);
+  }
+
+  setPagination(info: any) {
+    this.nextUrl = info.next || '';
+    this.prevUrl = info.prev || '';
   }
 }
-
-const ApiUrl: string = 'https://rickandmortyapi.com/api/character';

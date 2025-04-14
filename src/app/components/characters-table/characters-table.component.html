@@ -1,0 +1,39 @@
+<div class="container">
+    
+    <div class="row mb-3 mt-3">
+      <div class="col">
+        <button class="btn btn-primary" (click)="fetchPreviousPage()" [disabled]="!hasPreviousPage">
+          Previous Page
+        </button>
+      </div>
+      <div class="col-6"></div>
+      <div class="col">
+        <button class="btn btn-primary float-end" (click)="fetchNextPage()" [disabled]="!hasNextPage">
+          Next Page
+        </button>
+      </div>
+    </div>
+  
+    
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let character of characters">
+        <app-character-card [character]="character"></app-character-card>
+      </div>
+    </div>
+  
+    
+    <div class="row mb-3 mt-3">
+      <div class="col">
+        <button class="btn btn-primary" (click)="fetchPreviousPage()" [disabled]="!hasPreviousPage">
+          Previous Page
+        </button>
+      </div>
+      <div class="col-6"></div>
+      <div class="col">
+        <button class="btn btn-primary float-end" (click)="fetchNextPage()" [disabled]="!hasNextPage">
+          Next Page
+        </button>
+      </div>
+    </div>
+  </div>
+  
